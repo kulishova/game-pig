@@ -13,14 +13,28 @@ const player0Element = document.querySelector('.player--0')
 const player1Element = document.querySelector('.player--1')
 
 // Начальные условия игры
-score0Element.textContent = 0
-score1Element.textContent = 0
-diceElement.classList.add('hidden')
 
-const totalScores = [0, 0]
-let currentScore = 0
-let activePlayer = 0
-let isPlaying = true
+let totalScores, currentScore, activePlayer, isPlaying
+
+const initGame = function () {
+  totalScores = [0, 0]
+  currentScore = 0
+  activePlayer = 0
+  isPlaying = true
+
+  diceElement.classList.add('hidden')
+  player0Element.classList.remove('player--winner')
+  player1Element.classList.remove('player--winner')
+  player0Element.classList.remove('player--active')
+  player1Element.classList.remove('player--active')
+  player0Element.classList.add('player--active')
+  score0Element.textContent = 0
+  score1Element.textContent = 0
+  current0Element.textContent = 0
+  current1Element.textContent = 0
+}
+
+initGame()
 
 const switchActivePlayer = function () {
   currentScore = 0
@@ -35,7 +49,6 @@ btnRoll.addEventListener('click', function () {
   if (isPlaying) {
     //1. Сгенерировать случайное число
     const diceNumber = Math.trunc(Math.random() * 6) + 1
-    console.log(diceNumber)
     // 2. Отобразить число на кубике
     diceElement.classList.remove('hidden')
     diceElement.src = `dice${diceNumber}.png`
@@ -66,8 +79,11 @@ btnHold.addEventListener('click', function () {
       document
         .querySelector(`.player--${activePlayer}`)
         .classList.remove('player--active')
+      diceElement.classList.add('hidden')
     } else {
       switchActivePlayer()
     }
   }
 })
+
+btnNew.addEventListener('click', initGame)
